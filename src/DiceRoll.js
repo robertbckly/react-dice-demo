@@ -12,7 +12,7 @@ export default class DiceRoll extends Component {
   constructor(props) {
     super(props);
     // Must fill with null; undefined indexes are ignored by Array.map()
-    this.state = { dice: Array(this.props.diceCount).fill(null), status: 'ready' };
+    this.state = { dice: Array(this.props.diceCount).fill(null), isRolling: false };
     this.roll = this.roll.bind(this);
   }
 
@@ -29,7 +29,7 @@ export default class DiceRoll extends Component {
       delay = this.props.rollDelay;
       // Set pending status to trigger animation
       this.setState({
-        status: 'pending',
+        isRolling: true,
       });
     }
     // After (optional) delay...
@@ -39,26 +39,24 @@ export default class DiceRoll extends Component {
         dice: this.state.dice.map(() => {
           return Math.floor(Math.random() * this.props.faceCount) + 1;
         }),
-        status: 'ready',
+        isRolling: false,
       });
     }, delay);
   }
 
   render() {
-    const renderedDice = this.state.dice.map((value, i) => {
-      return (
-        <Dice key={i} val={value} isRolling={this.state.status === 'pending'} />
-      );
-    });
-
     return (
       <section className="DiceRoll">
         {/* Dice... */}
-        <div className="DiceRoll-dice">{renderedDice}</div>
+        <div className="DiceRoll-dice">
+          {this.state.dice.map((value, i) => {
+            return <Dice key={i} val={value} isRolling={this.state.isRolling} />;
+          })}
+        </div>
         {/* Total... */}
         <p
           className={` ${
-            this.state.status === 'ready'
+            this.state.isRolling === false
               ? 'DiceRoll-total DiceRoll-total--animate'
               : 'DiceRoll-total'
           }`}>
@@ -69,7 +67,7 @@ export default class DiceRoll extends Component {
           onClick={() => {
             this.roll();
           }}
-          disabled={this.state.status === 'pending'}
+          disabled={this.state.isRolling}
           className="DiceRoll-roll-button">
           Roll Dice!
         </button>
