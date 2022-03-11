@@ -1,0 +1,15 @@
+.Dice {
+  font-size: 7.5em;
+  line-height: 1em;
+}
+
+.Dice--animate {
+  /* (Animate.css) */
+  animation: tada 750ms ease-in-out;
+}
+
+@media screen and (max-width: 1000px) {
+  .Dice {
+    font-size: 5em;
+  }
+}

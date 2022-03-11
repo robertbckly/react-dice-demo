@@ -1,0 +1,37 @@
+.DiceRoll {
+  margin: 2em;
+  text-align: center;
+}
+
+.DiceRoll-dice {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.DiceRoll-total {
+  margin-top: 2rem;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.DiceRoll-total--animate {
+  animation: fadeIn 500ms ease-in-out;
+}
+
+.DiceRoll-roll-button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 1em;
+  margin-top: 2em;
+  font-size: 1em;
+  color: black;
+  background-color: white;
+  cursor: pointer;
+}
+
+.DiceRoll-roll-button:disabled {
+  color: grey;
+  cursor: wait;
+}
