@@ -35,13 +35,20 @@ export default class DiceRoll extends Component {
     // After (optional) delay...
     setTimeout(() => {
       // Update dice and reset status to ready
-      this.setState({
-        dice: this.state.dice.map(() => {
-          return Math.floor(Math.random() * this.props.faceCount) + 1;
-        }),
-        isRolling: false,
-      });
-    }, delay);
+      // IMPROVEMENT:
+      // now using callback form of setState...
+      // because state can be updated asynchronously...
+      // so can't depend on it ('currState' below is a copy of current state).
+      // = Good practice even if strictly not a problem in this case.
+      this.setState((currState) => {
+        return {
+          dice: currState.dice.map(() => {
+            return Math.floor(Math.random() * this.props.faceCount) + 1;
+          }),
+          isRolling: false,
+        };
+      }, delay);
+    });
   }
 
   render() {
