@@ -47,8 +47,8 @@ export default class DiceRoll extends Component {
           }),
           isRolling: false,
         };
-      }, delay);
-    });
+      });
+    }, delay);
   }
 
   render() {
