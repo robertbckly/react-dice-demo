@@ -13,12 +13,20 @@ export default class DiceRoll extends Component {
     super(props);
     // Must fill with null; undefined indexes are ignored by Array.map()
     this.state = { dice: Array(this.props.diceCount).fill(null), isRolling: false };
+    this.handleButtonClick = this.handleButtonClick.bind(this);
     this.roll = this.roll.bind(this);
   }
 
   componentDidMount() {
     // Roll with no delay upon mounting
     this.roll(true);
+  }
+
+  // Using an intermediate event handling function...
+  // because it prevents function creation every render...
+  // and is a convention that I like.
+  handleButtonClick(e) {
+    this.roll();
   }
 
   roll(immediate = false) {
@@ -71,9 +79,7 @@ export default class DiceRoll extends Component {
         </p>
         {/* Roll button... */}
         <button
-          onClick={() => {
-            this.roll();
-          }}
+          onClick={this.handleButtonClick}
           disabled={this.state.isRolling}
           className="DiceRoll-roll-button">
           Roll Dice!
