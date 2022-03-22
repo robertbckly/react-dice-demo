@@ -18,45 +18,34 @@ export default class DiceRoll extends Component {
   }
 
   componentDidMount() {
-    // Roll with no delay upon mounting
-    this.roll(true);
+    this.setState((exState) => {
+      return { dice: this.roll(exState.dice) };
+    });
   }
 
   // Using an intermediate event handling function...
   // because it prevents function creation every render...
   // and is a convention that I like.
   handleButtonClick(e) {
-    this.roll();
+    // Delayed roll for simulation
+
+    this.setState({
+      isRolling: true,
+    });
+    setTimeout(() => {
+      this.setState((exState) => {
+        return { dice: this.roll(exState.dice), isRolling: false };
+      });
+    }, this.props.rollDelay);
   }
 
-  roll(immediate = false) {
-    let delay = 0;
-    // If should delay...
-    if (!immediate) {
-      // Set delay interval
-      delay = this.props.rollDelay;
-      // Set pending status to trigger animation
-      this.setState({
-        isRolling: true,
-      });
-    }
-    // After (optional) delay...
-    setTimeout(() => {
-      // Update dice and reset status to ready
-      // IMPROVEMENT:
-      // now using callback form of setState...
-      // because state can be updated asynchronously...
-      // so can't depend on it ('currState' below is a copy of current state).
-      // = Good practice even if strictly not a problem in this case.
-      this.setState((currState) => {
-        return {
-          dice: currState.dice.map(() => {
-            return Math.floor(Math.random() * this.props.faceCount) + 1;
-          }),
-          isRolling: false,
-        };
-      });
-    }, delay);
+  // Now a pure function!
+  // Nicer, easier unit to test, etc...
+  // Moves setState (side-affect) into lifecycle / event-handler methods.
+  roll(diceArray) {
+    return diceArray.map(() => {
+      return Math.floor(Math.random() * this.props.faceCount) + 1;
+    });
   }
 
   render() {
@@ -75,7 +64,9 @@ export default class DiceRoll extends Component {
               ? 'DiceRoll-total DiceRoll-total--animate'
               : 'DiceRoll-total'
           }`}>
-          {this.state.dice.reduce((total, dice) => total + dice)}
+          {/* Only reduce dice array if contains elements... */}
+          {this.state.dice.length > 0 &&
+            this.state.dice.reduce((total, dice) => total + dice)}
         </p>
         {/* Roll button... */}
         <button
