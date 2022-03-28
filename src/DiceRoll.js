@@ -11,13 +11,16 @@ export default class DiceRoll extends Component {
 
   constructor(props) {
     super(props);
+
     // Must fill with null; undefined indexes are ignored by Array.map()
     this.state = { dice: Array(this.props.diceCount).fill(null), isRolling: false };
+
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.roll = this.roll.bind(this);
   }
 
   componentDidMount() {
+    // Roll upon mounting without delay
     this.setState((exState) => {
       return { dice: this.roll(exState.dice) };
     });
@@ -27,8 +30,7 @@ export default class DiceRoll extends Component {
   // because it prevents function creation every render...
   // and is a convention that I like.
   handleButtonClick(e) {
-    // Delayed roll for simulation
-
+    // Roll upon click with simulated delay
     this.setState({
       isRolling: true,
     });
