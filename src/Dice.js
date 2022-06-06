@@ -6,11 +6,6 @@ export default class Dice extends Component {
   static DICE_ICON_CLASS_TEMPLATE = 'fa-solid fa-dice-';
   static DICE_ICON_CLASS_FAIL = 'fa-solid fa-square';
 
-  constructor(props) {
-    super(props);
-    this.state = { animate: false };
-  }
-
   // Dynamic class for Font Awesome icon
   static resolveIconClass(num) {
     // INVALID
