@@ -13,14 +13,17 @@ export default class DiceRoll extends Component {
     super(props);
 
     // Must fill with null; undefined indexes are ignored by Array.map()
-    this.state = { dice: Array(this.props.diceCount).fill(null), isRolling: false };
+    this.state = {
+      dice: Array(this.props.diceCount).fill(null),
+      isRolling: false,
+    };
 
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.roll = this.roll.bind(this);
   }
 
   componentDidMount() {
-    // Roll upon mounting without delay
+    // Roll upon mounting
     this.setState((exState) => {
       return { dice: this.roll(exState.dice) };
     });
@@ -34,9 +37,13 @@ export default class DiceRoll extends Component {
     this.setState({
       isRolling: true,
     });
+    // Perform roll after timeout
     setTimeout(() => {
       this.setState((exState) => {
-        return { dice: this.roll(exState.dice), isRolling: false };
+        return {
+          dice: this.roll(exState.dice),
+          isRolling: false,
+        };
       });
     }, this.props.rollDelay);
   }
@@ -67,8 +74,7 @@ export default class DiceRoll extends Component {
               : 'DiceRoll-total'
           }`}>
           {/* Only reduce dice array if contains elements... */}
-          {this.state.dice.length > 0 &&
-            this.state.dice.reduce((total, dice) => total + dice)}
+          {this.state.dice.length > 0 && this.state.dice.reduce((total, dice) => total + dice)}
         </p>
         {/* Roll button... */}
         <button
